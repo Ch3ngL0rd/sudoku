@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <optional>
+#include <gperftools/profiler.h>
 
 const int BOARD_SIZE = 9;
 const int CELL_SIZE = 3;
@@ -118,6 +119,7 @@ std::optional<SudokuBoard> solve(SudokuBoard& board) {
 }
 
 int main() {
+    ProfilerStart("sudoku.prof");
     std::vector<SudokuBoard> boards;
     // read(boards, "tiny.txt");
     read(boards, "problems.txt");
@@ -125,5 +127,7 @@ int main() {
         solve(board);
     }
     write(boards, "solutions.txt");
+
+    ProfilerStop();
     return 0;
 }
