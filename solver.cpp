@@ -10,7 +10,7 @@
 const int BOARD_SIZE = 9;
 const int CELL_SIZE = 3;
 
-using CellGroup = std::array<bool, BOARD_SIZE>;
+using CellGroup = std::bitset<BOARD_SIZE>;
 using SudokuGroup = std::array<CellGroup, BOARD_SIZE>;
 using Board = std::array<std::array<int, BOARD_SIZE>, BOARD_SIZE>;
 
@@ -125,9 +125,9 @@ Board solve(Board& board) {
     SudokuBoard sudoku_board;
     sudoku_board.board = board;
     for (int i = 0; i < BOARD_SIZE; ++i) {
-        std::ranges::fill(sudoku_board.rows[i], false);
-        std::ranges::fill(sudoku_board.cols[i], false);
-        std::ranges::fill(sudoku_board.cells[i], false);
+        sudoku_board.rows[i] = 0b0;
+        sudoku_board.cols[i] = 0b0;
+        sudoku_board.cells[i] = 0b0;
     }
 
     for (int r = 0; r < BOARD_SIZE; ++r) {

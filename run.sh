@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 # Compile the solver and validator
-g++ -std=c++20 -O2 -o build/solver solver.cpp -lprofiler -I/opt/homebrew/include -L/opt/homebrew/lib
+g++ -std=c++20 -o build/solver solver.cpp -lprofiler -I/opt/homebrew/include -L/opt/homebrew/lib
 g++ -std=c++20 -O2 -o build/validator validator.cpp
 
 # Run the solver on the input file and produce a solution
