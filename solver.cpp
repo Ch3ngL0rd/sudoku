@@ -6,14 +6,9 @@
 #include <optional>
 #include <algorithm> // For fill algorithm
 #include <bitset>
-#include <gperftools/profiler.h>
 
 const int BOARD_SIZE = 9;
 const int CELL_SIZE = 3;
-
-// hashmap for each row to check if it contains
-// for each row, true if cell is in place
-// index is val - 1
 
 using CellGroup = std::array<bool, BOARD_SIZE>;
 using SudokuGroup = std::array<CellGroup, BOARD_SIZE>;
@@ -116,6 +111,8 @@ bool solve_board(SudokuBoard& sudoku_board, int i) {
         if (solve_board(sudoku_board, i + 1)) {
             return true;
         }
+
+        sudoku_board.board[r][c] = 0;
         sudoku_board.rows[r][num_index] = false;
         sudoku_board.cols[c][num_index] = false;
         sudoku_board.cells[3 * cell_row + cell_col][num_index] = false;
@@ -150,16 +147,25 @@ Board solve(Board& board) {
     return sudoku_board.board;
 }
 
-int main() {
-    ProfilerStart("solver.prof");
+int main(int argc, char *argv[]) {
+    if (argc < 3) {
+        std::cerr << "Input the problem txt file as the second argument." << std::endl;
+        std::cerr << "Input the solution txt file as the second argument." << std::endl;
+        return 1;
+    }
+    std::string input = argv[1];
+    std::string output = argv[2];
+
     std::vector<Board> boards;
     boards.reserve(10e6);
-    read(boards, "problems.txt");
+
+    read(boards, input);
+
     for (Board& board : boards) {
         board = solve(board);
     }
-    write(boards, "solutions.txt");
 
-    ProfilerStop();
+    write(boards, output);
+
     return 0;
 }
